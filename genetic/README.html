@@ -1,0 +1,37 @@
+<html>
+  <body>
+This directory contains the scripts for carrying out the genetic association analyses. Most data analysis files are dependent on the specific structure at the sensite data server (TSD).
+No data included here since they are sensitive. The scripts use various annotation files that are publicly available and summary statistics files.
+<br><br>
+To run the analyses, first run doextract.sh to retrieve the beginning and end base pairs of each gene of interest.
+Then run doextractSNPs.sh to get the relevant SNPs for each gene set and extract the data into separate files according to different SNP p-value thresholds.
+Then run doextractPRSs.sh to extract genetic data from your sample from the SNPs of interest and to form polygenic risk scores for the chosen gene sets.
+Finally, run doassociations.sh to associate the PRSs to your WM data.
+<br><br>
+File breakdown:<br>
+<pre>    
+ README.html                                                                          #This file
+ assoc                                                                                #Directory where the files needed for the association results will be saved
+ genetic                                                                              #Directory where the SCZ PRSs will be calculated for each subject
+ geneticBD                                                                            #Directory where the BD PRSs will be calculated for each subject
+ SCZ_MetaBrain_MR_Results.txt                                                         #File with the MR results
+ correlations_BDPRSs_othermeasures_all_pvals_ztransformed_LNSonly.py                  #Script for estimating the associations for BD PRSs
+ correlations_PRSs_othermeasures_againstIQtoo_all_pvals_ztransformed_LNSonly.py       #Script for estimating the associations, include IQ as covariate
+ correlations_PRSs_othermeasures_all_pvals_ztransformed_LNSonly.py                    #Script for estimating the associations
+ correlations_PRSs_othermeasures_notagainstsex_all_pvals_ztransformed_LNSonly.py      #Script for estimating the associations, don't include sex as covariate
+ correlations_PRSs_othermeasures_notagainstsexorage_all_pvals_ztransformed_LNSonly.py #Script for estimating the associations, don't include sex and age as covariates
+ doassociations.sh                                                                    #Bash script for running the associations
+ doextract.sh                                                                         #Bash script for extracting information for the relevant genes
+ doextractPRSs.sh                                                                     #Bash script for extracting PRSs
+ doextractSNPs.sh                                                                     #Bash script for extracting relevant SNPs
+ extract_begend.py                                                                    #Script for finding the beginning and end base pairs of genes
+ extract_othermeasures_BDPRS_transformed_LNSonly.py                                   #Script for extracting the BD-PRSs once the PRSice is done
+ extract_othermeasures_PRS_transformed_LNSonly.py                                     #Script for extracting the SCZ-PRSs once the PRSice is done
+ filter_ripke2020_v3_givenlist.py                                                     #Script for extracting SCZ-GWAS data for the relevant genes
+ make_snp_file_manythrs.py                                                            #Script for making a SNP file that includes the relevant SNPs with different SNP thresholds
+ sklearn_extension2.py                                                                #Script that does the same as sklearn's LinearRegression but also calculates the p-value (the script requires that sklearn is installed anyway)
+</pre>
+  </body>
+</html>
+
+   

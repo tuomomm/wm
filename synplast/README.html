@@ -1,0 +1,18 @@
+<html>
+<body>
+    This directory contains the scripts for simulating the synaptic plasticity experiments.
+    To run the population-averaged simulations of CTRL and SCZ-ACC and SCZ-PFC simulations, run
+    <br>
+    <pre>sh runpopavs.sh
+    </pre>
+    This will take several hours (20-40 min per simulation). The subject-wise simulations can be run through runsubjectwise.sh, but the coefficients for different protein concentrations are not included since they are considered sensitive data.
+<br><br>
+File breakdown:<br>
+<pre>
+ README.html                                     #This file
+ model_nrn_altered_noU_extfilename_smallconcs.py #Python/NEURON RxD script for running the simulations
+ runpopavs.sh                                    #A bash script that runs population-averaged simulations
+ runsubjectwise.sh                               #A bash script for running subject-wise simulations (data not included that is needed for this due to restrictions in the distribution agreement)
+</pre>
+</body>
+</html>

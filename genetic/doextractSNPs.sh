@@ -1,0 +1,9 @@
+for q in genes_all_modeled_synaptic genes_full genes_all_modeled_ionchannels2 genes_all_modeled_ionchannels2_CACNA1C genes_all_modeled_ionchannels2_CACNA1D genes_all_modeled_ionchannels2_CACNA1I genes_all_modeled_ionchannels2_KCNB1 genes_all_modeled_ionchannels2_KCNJ6 genes_all_modeled_ionchannels2_KCND3 genes_all_modeled_ionchannels2_HCN1 genes_all_modeled_ionchannels2_ATP2A2 genes_new genes_new_ionchannels genes_new_synaptic genes_new_ionchannels_kcn genes_new_ionchannels_cacn genes_new_ionchannels_scn_and_hcn genes_new_synaptic_others genes_new_synaptic_PKA genes_new_synaptic_PKC genes_new_synaptic_PKAPKC genes_new_synaptic_PKAPKC_noPP;
+do
+    echo python3 filter_ripke2020_v3_givenlist.py $q
+    python3 filter_ripke2020_v3_givenlist.py $q
+
+    echo python3 make_snp_file_manythrs.py $q
+    python3 make_snp_file_manythrs.py $q
+done
+

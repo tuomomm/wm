@@ -1,0 +1,173 @@
+<html>
+  <body>
+    This entry contains the network and single-cell simulation scripts for the article "Multimodal evidence for a mechanistic model of working memory deficits in schizophrenia".
+    The simulations scripts are Python+NEURON scripts. Tested with Python 3.9.21 and NEURON v. 8.2.2. Some of the scripts also work with NEURON v.9.0.0 (the ACG and MCellRan4 mechanisms have to be replaced by Random123).<br><br>
+
+    Most of the subject-wise data is not included since they are sensitive, but the CACNA1I data are included since the subjects are anonymized and only one data point is provided per subject.
+    <br><br>
+
+    To run the simulations, run the following scripts:
+    <br>
+    <pre>
+ nrnivmodl            #Compile the required mechanisms
+ sh runfig_methods.sh #Run single-cell and network simulations needed for the Methods illustration of the model. The single-cell simulations last < 1 hour in total (single-CPU), the network simulation takes a couple of hours when parallellized to 8 CPUs
+ sh runfig1.sh        #Run single-cell simulations with CTRL and SCZ-ACC and SCZ-PFC variants
+ sh runfig2.sh        #Run network simulations with CTRL and SCZ-ACC and SCZ-PFC variants, mostly genewise
+ sh runfig3.sh        #Run network simulations with CTRL and SCZ-ACC and SCZ-PFC variants (including simulations where Ca transients are saved), mostly genewise
+ sh runfig3b.sh       #Run network simulations with CTRL and SCZ-ACC and SCZ-PFC variants (with NMDA current recording)
+ sh runfig6.sh        #Run personalized network simulations with CTRL and SCZ-ACC and SCZ-PFC variants of CACNA1I expression
+ sh runfig_supp.sh    #Run supplementary
+    </pre>
+    <br> 
+    To draw the figures, run "python3 drawfigXXX.py", mostly without arguments (apart from drawfig4C-G_and_S7.py for which argument 'PFC' can be given to draw the alternative figure, Fig. S7).
+    
+    
+File breakdown:<br>
+<pre>
+ README.html                                                     #This file
+
+ Directories:
+ backupcfg                                                       #A folder where some config files will be saved
+ data                                                            #A folder where simulation data will be saved (mostly temporarily)
+ meminput                                                        #A folder where metadata will be saved
+ subjs                                                           #A folder for subject-wise simulations
+
+Bash files:
+ CM_wmNew_samps_IC_ACC_PConly_isSign0_isImputed1_Both_CACNA1I.sh #Subject-wise data for CACNA1I expression in the ACC relative to average CTRL subjects.
+ CM_wmNew_samps_IC_PFC_PConly_isSign0_isImputed1_Both_CACNA1I.sh #Subject-wise data for CACNA1I expression in the PFC relative to average CTRL subjects. 
+ runfig1.sh                                                      #Script for running simulations for Fig. 1
+ runfig2.sh                                                      #Script for running simulations for Fig. 2
+ runfig3.sh                                                      #Script for running (mostly) single-gene variant simulations for Fig. 3-4 and some of the supplementary figures
+ runfig3b.sh                                                     #Script for running combined variant simulations for Fig. 4
+ runfig6.sh                                                      #Script for running simulations for Fig. 6F-G
+ runfig_methods.sh                                               #Script for running simulations for the Methods figure
+
+Python files for plotting figure:
+ drawfig1.py                                                     #Plots Fig. 1
+ drawfig2A-I.py                                                  #Plots Fig. 2A-I
+ drawfig2J-K_and_S3A-B.py                                        #Plots Fig. 2J-K and S3A-B
+ drawfig3A.py                                                    #Plots Fig. 3A
+ drawfig3B.py                                                    #Plots Fig. 3B
+ drawfig3C-D.py                                                  #Plots Fig. 3C-D
+ drawfig4A-B.py                                                  #Plots Fig. 4A-B
+ drawfig4C-G_and_S7.py                                           #Plots Fig. C-G (and with a different argument the supplementary Fig. S7; uses data that should be generated in ../synaptic)
+ drawfig5A.py                                                    #Plots Fig. 5A (using data that should be saved in ../genetic)
+ drawfig5B-C.py                                                  #Plots Fig. 5B-C (using data that should be saved in ../genetic)
+ drawfig6A-C.py                                                  #Plots Fig. 6A-C (using data that should be saved in ../genetic)
+ drawfig6D-E.py                                                  #Plots Fig. 6D-E (using data that should be saved in ../genetic)
+ drawfig6F-G.py                                                  #Plots Fig. 6F-G
+ drawfig8C-H.py                                                  #Plots Fig. 8C-H (Methods figure)
+ drawfig8I-J.py                                                  #Plots Fig. 8I-J (Methods figure)
+ drawfigS1.py                                                    #Plots Fig. S1
+ drawfigS2A-L.py                                                 #Plots Fig. S2A-L
+ drawfigS2M.py                                                   #Plots Fig. S2M
+ drawfigS2N.py                                                   #Plots Fig. S2N
+ drawfigS3C-J.py                                                 #Plots Fig. S3C-J
+ drawfigS4A-I.py                                                 #Plots Fig. S4A-I
+ drawfigS4J.py                                                   #Plots Fig. S4J
+ drawfigS4K.py                                                   #Plots Fig. S4K
+ drawfigS5A-B.py                                                 #Plots Fig. S5A-B
+ drawfigS5C-K.py                                                 #Plots Fig. S5C-K
+ drawfigS6.py                                                    #Plots Fig. S6
+ drawfigS8.py                                                    #Plots Fig. S8
+ drawfigS9A-E.py                                                 #Plots Fig. S9A-E
+ drawfigS9F-G.py                                                 #Plots Fig. S9F-G
+
+Other python files:
+ calcconds.py                                                    #Calculates total synaptic conductance using the rule of Maki-Marttunen et al. 2020
+ conf.py                                                         #A config python file, from Neymotin et al. 2016
+ geom_withSK3.py                                                 #A geometry+biophysics file from Neymotin et al. 2016, adapted here to include the SK current mechanisms from Hay et al. 2011
+ geom_withSK3_95apamin.py                                        #A geometry+biophysics file with 95% apamin efficiency
+ geom_withSK3_apamin.py                                          #A geometry+biophysics file with 98% apamin efficiency (considered as "default" efficiency)
+ geom_withSK3_fullapamin.py                                      #A geometry+biophysics file with 100% apamin efficiency (no SK currents)
+ geom_withSK3_saveExtra.py                                       #A geometry+biophysics file that allows recording most relevant dendritic Ca currents
+ geom_withSK3_saveExtra2.py                                      #A geometry+biophysics file that allows recording all relevant Ca currents
+ labels.py                                                       #A label python file from Neymotin et al. 2016
+ mpisim_long_withSK3_CTRL_altgain_ExpWMnoNM.py                   #The network simulation script where the HCN-mediated response to WM-inducing stimulus is replaced by external upregulation of glutamatergic synapses
+ mpisim_withSK3_l5hzonly.py                                      #The main network simulation script, adapted from Neymotin et al. 2016 to include a hot zone of Ca channels in the apical dendrite and SK currents from Hay et al. 2011
+ mpisim_withSK3_l5hzonly_saveExtra2.py                           #The network simulation script that saves additional Ca currnts
+ mytools.py                                                      #A python file with miscellanous functions
+ nqs.py                                                          #A python file for processing the data through NQS 
+ onepyr_noplot_withSK3.py                                        #The single-cell simulation script, adapted from Neymotin et al. 2016 to include a hot zone of Ca channels in the apical dendrite and SK currents from Hay et al. 2011
+ onepyr_noplot_withSK3_VClamp.py                                 #The single-cell simulation script for simulating the voltage clamp experiment
+ onepyr_noplot_withSK3_longDC.py                                 #The single-cell simulation script for experiments where an additional DC is given
+ onepyr_noplot_withSK3_longDC_95apamin.py                        #The single-cell simulation script for experiments where an additional DC is given, with only 5% SK current conductances
+ onepyr_noplot_withSK3_longDC_95apamin_nohotzone.py              #The single-cell simulation script for experiments where an additional DC is given, with only 5% SK current conductances, and where there is no hot zone
+ onepyr_noplot_withSK3_longDC_apamin.py                          #The single-cell simulation script for experiments where an additional DC is given, with only 2% SK current conductances
+ onepyr_noplot_withSK3_longDC_apamin_nohotzone.py                #The single-cell simulation script for experiments where an additional DC is given, with only 2% SK current conductances, and where there is no hot zone
+ onepyr_noplot_withSK3_longDC_fullapamin.py                      #The single-cell simulation script for experiments where an additional DC is given, with no SK current conductances
+ onepyr_noplot_withSK3_longDC_fullapamin_nohotzone.py            #The single-cell simulation script for experiments where an additional DC is given, with no SK current conductances, and where there is no hot zone
+ onepyr_noplot_withSK3_nohotzone_VClamp.py                       #The single-cell simulation script for simulating the voltage clamp experiment, and where there is no hot zone
+ onepyr_noplot_withSK3_nohotzone_withIh.py                       #The single-cell simulation script, including recording of the Ih activation, and where there is no hot zone
+ onepyr_noplot_withSK3_withIh.py                                 #The single-cell simulation script, including recording of the Ih activation
+ pyinit.py                                                       #Initialization file from Neymotin et al. 2016
+ simdat_saveFRandCaApic_higherres.py                             #A data analysis script (modified from simdat.py in Neymotin et al. 2016) that saves the firing rate and apical Ca concentration data, in higher resolution
+ simdat_saveFRandCa_higherres.py                                 #Saves the firing rate and somatic Ca concentration data, in higher resolution
+ simdat_saveFRandMUAonly.py                                      #Saves the firing rate and MUA data
+ simdat_saveFRandMUAonly_allowNonArray.py                        #Saves the firing rate and MUA data. Allows saving even when MUA could not be generated
+ simdat_saveFRandMUAonly_withallNMDA_allowNonArray.py            #Saves the firing rate and MUA data with NMDA currents
+ simdat_savespikes.py                                            #Saves the spike data
+ simdat_ExpWM.py                                                 #Saves the spike data, used for the experiments where the HCN-mediated response to WM-inducing stimulus is replaced by external upregulation of glutamatergic synapses
+ 
+HOC files (see Neymotin et al. 2016)
+ declist.hoc     
+ decnqs.hoc      
+ decvec.hoc      
+ default.hoc     
+ default_orig.hoc
+ drline.hoc      
+ grvec.hoc       
+ init.hoc        
+ init_old.hoc    
+ labels.hoc      
+ local.hoc       
+ nqs.hoc         
+ nrnoc.hoc       
+ python.hoc      
+ python_old.hoc  
+ pywrap.hoc      
+ simctrl.hoc     
+ syncode.hoc
+ xgetargs.hoc
+ 
+MOD files (from Neymotin et al. unless otherwise stated)
+ IC.mod                                                          #
+ IKM.mod                                                         #
+ Ih.mod                                                          #
+ MyExp2SynBB.mod                                                 #
+ MyExp2SynNMDABB.mod                                             #
+ SK_E2.mod                                                       #From Hay et al. 2011
+ cagk.mod                                                        #
+ cal.mod                                                         #
+ calts.mod                                                       #
+ can.mod                                                         #
+ cat.mod                                                         #
+ gabab.mod                                                       #
+ icalts.mod                                                      #
+ ihlts.mod                                                       #
+ kap.mod                                                         #
+ kcalts.mod                                                      #
+ kdmc.mod                                                        #
+ kdr.mod                                                         #
+ kdrbwb.mod                                                      #
+ km.mod                                                          #
+ mglur.mod                                                       #
+ misc.mod                                                        #
+ nafbwb.mod                                                      #
+ nax.mod                                                         #
+ vecst.mod                                                       #
+ vecstim.mod                                                     #
+
+Other files from Neymotin et al.:
+ aux_fun.inc 
+ ghk.inc     
+ netcfg.cfg  
+ onepyr.cfg  
+ misc.h      
+ 
+Data files for BOLD analysis:
+ ACC_psc_data.mat                                                #BOLD data extracted for ACC
+ rMFG1_psc_data.mat                                              #BOLD data extracted for PFC
+ 
+  </body>
+</html>
