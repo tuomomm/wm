@@ -37,6 +37,7 @@ blockeds_ACC = [['DAGK','1.039'], ['Gi','0.984'], ['NCX','0.999'], ['Ng','0.944'
 
 toPlot = ['PP1','PKA','NCX','PLA2','PDE4','PKC','CK','Ng','Gqabg','Calbin,CalbinC','DAGK','Gi','comb']
 toPlotNames = ['PP1','PKA','NCX','PLA2','PDE4','PKC','CaMKII','Ng','Gq','Calbin','DAGK','Gi','Comb.']
+toPlotGenes = ['PPP1CA, PPP1CC','PRKAR2A','SLC8A3','PLA2G4A','PDE4B','PRKCA, PRKCB','CAMK2B','NRGN','GNAQ','CALB2','DGKG, DGKH, DGKI, DGKZ','GNAI2','']
 
 f,axs = subplots(3,5)
 axarr = axs.reshape(prod(axs.shape),).tolist()
@@ -52,8 +53,8 @@ for iax in range(0,13):
     axarr[iax].spines[axis].set_linewidth(0.3)
   boxoff(axarr[iax])
 
-for iax in range(0,6):
-  axnew.append(f.add_axes([0.09,0.8-0.15*iax,0.40,0.13]))
+for iax in range(0,4):
+  axnew.append(f.add_axes([0.09,0.8-0.17*iax,0.40,0.15]))
   axnew[iax].tick_params(axis='both', which='major', labelsize=4, length=2)
   for axis in ['top','bottom','left','right']:      
     axnew[iax].spines[axis].set_linewidth(0.3)
@@ -104,7 +105,7 @@ channel_titles = ['CTRL','Combination']
 
 FRThrCoeff = 2.0
 
-filename_CTRL = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,Gix0.5,0.5,1.5,1.5,0.984_onset24040000.0_n1600_freq16.0_dur3.0_flux150.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
+filename_CTRL = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,Gix0.5,0.5,1.5,1.5,0.984_onset24040000.0_n1600_freq16.0_dur3.0_flux120.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
 if exists(filename_CTRL):
   print('Loading '+filename_CTRL)
   conds_CTRL, times_CTRL = calcconds.calcconds_nrn(filename_CTRL)
@@ -120,18 +121,16 @@ for iax in range(0,len(toPlot)):
     axnew[0].bar(0+5*itoPlot,conds_CTRL[0],facecolor=dimcols[0],width=0.6)
     axnew[1].bar(0+5*itoPlot,GluRconcs[2][0],facecolor=dimcols[0],width=0.6)
     
-    axnew[2].bar(0+5*itoPlot,conds_CTRL[2],facecolor=dimcols[0],width=0.6)
-    axnew[3].bar(0+5*itoPlot,conds_CTRL[1+30*6],facecolor=dimcols[0],width=0.6)
+    #axnew[2].bar(0+5*itoPlot,conds_CTRL[2],facecolor=dimcols[0],width=0.6)
+    axnew[2].bar(0+5*itoPlot,conds_CTRL[1+30*6],facecolor=dimcols[0],width=0.6)
 
-    axnew[4].bar(0+5*itoPlot,conds_CTRL[2]/conds_CTRL[0],facecolor=dimcols[0],width=0.6)
-    axnew[5].bar(0+5*itoPlot,conds_CTRL[1+30*6]/conds_CTRL[0],facecolor=dimcols[0],width=0.6)
+    #axnew[4].bar(0+5*itoPlot,conds_CTRL[2]/conds_CTRL[0],facecolor=dimcols[0],width=0.6)
+    axnew[3].bar(0+5*itoPlot,conds_CTRL[1+30*6]/conds_CTRL[0],facecolor=dimcols[0],width=0.6)
 
-    drawdiscontinuity(axnew[0],33,0.1,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-    drawdiscontinuity(axnew[1],17,0.18,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-    drawdiscontinuity(axnew[2],27.4,0.06,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-    drawdiscontinuity(axnew[3],81.8,0.05,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-    drawdiscontinuity(axnew[4],0.795,0.0008,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-    drawdiscontinuity(axnew[5],2.15,0.0055,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+    drawdiscontinuity(axnew[0],34.5,0.1,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+    #drawdiscontinuity(axnew[1],17,0.18,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+    drawdiscontinuity(axnew[2],78.5,0.1,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+    drawdiscontinuity(axnew[3],2.05,0.007,0+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[0],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
 groupmeans_all = []
 for iarea in range(0,len(areas)):
     blockeds = blockeds_PFC if iarea == 1 else blockeds_ACC
@@ -147,7 +146,7 @@ for iarea in range(0,len(areas)):
         print(blocked+" not found in toPlot")
       else:
         itoPlot = itoPlot[0]
-      filename = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,'+blocked+'x0.5,0.5,1.5,1.5,'+blockedCoeff+'_onset24040000.0_n1600_freq16.0_dur3.0_flux150.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
+      filename = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,'+blocked+'x0.5,0.5,1.5,1.5,'+blockedCoeff+'_onset24040000.0_n1600_freq16.0_dur3.0_flux120.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
       if exists(filename):
         print('Loading '+filename)
         conds, times = calcconds.calcconds_nrn(filename)
@@ -156,57 +155,49 @@ for iarea in range(0,len(areas)):
         axnew[0].bar(5*itoPlot+1+iarea,conds[0],facecolor=dimcols[1+iarea],width=0.6)
         print(areas[iarea]+' baseline '+str((conds[0]/conds_CTRL[0]-1)*100)+'% '+blocked+'x'+blockedCoeff+ '('+str(conds[0])+')')
         axnew[1].bar(5*itoPlot+1+iarea,GluRconcs[2][0],facecolor=dimcols[1+iarea],width=0.6)
-        axnew[2].bar(5*itoPlot+1+iarea,conds[2],facecolor=dimcols[1+iarea],width=0.6)
-        print(areas[iarea]+' abs-cond-10-sec '+str((conds[2]/conds_CTRL[2]-1)*100)+'% '+blocked+'x'+blockedCoeff+ '('+str(conds[2])+')')
-        axnew[3].bar(5*itoPlot+1+iarea,conds[1+30*6],facecolor=dimcols[1+iarea],width=0.6)
+        #axnew[2].bar(5*itoPlot+1+iarea,conds[2],facecolor=dimcols[1+iarea],width=0.6)
+        #print(areas[iarea]+' abs-cond-10-sec '+str((conds[2]/conds_CTRL[2]-1)*100)+'% '+blocked+'x'+blockedCoeff+ '('+str(conds[2])+')')
+        axnew[2].bar(5*itoPlot+1+iarea,conds[1+30*6],facecolor=dimcols[1+iarea],width=0.6)
         print(areas[iarea]+' abs-cond-30-min '+str((conds[1+30*6]/conds_CTRL[1+30*6]-1)*100)+'% '+blocked+'x'+blockedCoeff+ '('+str(conds[1+30*6])+')')
-        axnew[4].bar(5*itoPlot+1+iarea,conds[2]/conds[0],facecolor=dimcols[1+iarea],width=0.6)
-        print(areas[iarea]+' rel-cond-10-sec '+str(((conds[2]-conds[0])/(conds_CTRL[2]-conds_CTRL[0])-1)*100)+'% '+blocked+'x'+blockedCoeff+' ('+str((conds[2]/conds[0]-1)*100)+'% from '+str((conds_CTRL[2]/conds_CTRL[0]-1)*100)+'% in CTRL)')
-        axnew[5].bar(5*itoPlot+1+iarea,conds[1+30*6]/conds[0],facecolor=dimcols[1+iarea],width=0.6)
+        #axnew[4].bar(5*itoPlot+1+iarea,conds[2]/conds[0],facecolor=dimcols[1+iarea],width=0.6)
+        #print(areas[iarea]+' rel-cond-10-sec '+str(((conds[2]-conds[0])/(conds_CTRL[2]-conds_CTRL[0])-1)*100)+'% '+blocked+'x'+blockedCoeff+' ('+str((conds[2]/conds[0]-1)*100)+'% from '+str((conds_CTRL[2]/conds_CTRL[0]-1)*100)+'% in CTRL)')
+        axnew[3].bar(5*itoPlot+1+iarea,conds[1+30*6]/conds[0],facecolor=dimcols[1+iarea],width=0.6)
         print(areas[iarea]+' rel-cond-30-min '+str(((conds[1+30*6]-conds[0])/(conds_CTRL[1+30*6]-conds_CTRL[0])-1)*100)+'% '+blocked+'x'+blockedCoeff+' ('+str((conds[1+30*6]/conds[0]-1)*100)+'% from '+str((conds_CTRL[1+30*6]/conds_CTRL[0]-1)*100)+'% in CTRL)')
 
-        drawdiscontinuity(axnew[0],33-0.1*(1+iarea),0.1,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-        drawdiscontinuity(axnew[1],17-0.18*(1+iarea),0.18,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-        drawdiscontinuity(axnew[2],27.4-0.06*(1+iarea),0.06,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-        drawdiscontinuity(axnew[3],81.8-0.05*(1+iarea),0.05,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-        drawdiscontinuity(axnew[4],0.795-0.0008*(1+iarea),0.0008,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
-        drawdiscontinuity(axnew[5],2.15-0.0055*(1+iarea),0.0055,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+        drawdiscontinuity(axnew[0],34.5-0.1*(1+iarea),0.1,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+        #drawdiscontinuity(axnew[1],17-0.18*(1+iarea),0.18,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+        drawdiscontinuity(axnew[2],78.5-0.1*(1+iarea),0.1,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
+        drawdiscontinuity(axnew[3],2.05-0.007*(1+iarea),0.007,1+iarea+5*itoPlot,0.32,1.0,0.8,blackcol=dimcols[1+iarea],whitecol='#EEEEEE' if itoPlot%2==1 else '#FFFFFF')
       else:
         print(filename+' does not exist')
 
 axnew[0].set_ylabel('Baseline\ncond. (pS)',fontsize=6)
 axnew[1].set_ylabel('Baseline\n[GluR1] at\nmemb. (nM)',fontsize=6)
-axnew[2].set_ylabel('Cond. at\n10 s (pS)',fontsize=6)
-axnew[3].set_ylabel('Cond. at\n30 min (pS)',fontsize=6)
-axnew[4].set_ylabel('Rel. cond.\nat 10 s\n(fold change)',fontsize=6)
-axnew[5].set_ylabel('Rel. cond.\nat 30 min\n(fold change)',fontsize=6)
+axnew[2].set_ylabel('Cond. at\n30 min (pS)',fontsize=6)
+axnew[3].set_ylabel('Rel. cond.\nat 30 min\n(fold change)',fontsize=6)
 
         
-axnew[0].set_ylim([32,39])
-axnew[1].set_ylim([15,30])
-axnew[2].set_ylim([27,31])
-axnew[3].set_ylim([81.6,84.5])
-axnew[4].set_ylim([0.79,0.83])
-axnew[5].set_ylim([2.1,2.4])
+axnew[0].set_ylim([34,38])
+axnew[1].set_ylim([0,30])
+#axnew[2].set_ylim([62.5,65.5])
+axnew[2].set_ylim([78,82])
+axnew[3].set_ylim([2.0,2.3])
 
-axnew[0].set_yticks([34,36,38])
-axnew[1].set_yticks([20,25,30])
-axnew[2].set_yticks([28,29,30,31])
-axnew[3].set_yticks([82,83,84])
-axnew[4].set_yticks([0.8,0.81,0.82,0.83])
-axnew[5].set_yticks([2.2,2.3,2.4])
+axnew[0].set_yticks([35,36,37])
+axnew[1].set_yticks([0,10,20,30])
+axnew[2].set_yticks([79,80,81])
+axnew[3].set_yticks([2.1,2.2])
 
-drawdiscontinuity(axnew[0],33,0.1,-1.5,0.32,1.0,0.8)
-drawdiscontinuity(axnew[1],17,0.18,-1.5,0.32,1.0,0.8,blackcol=dimcols[0])
-drawdiscontinuity(axnew[2],27.4,0.06,-1.5,0.32,1.0,0.8,blackcol=dimcols[0])
-drawdiscontinuity(axnew[3],81.8,0.05,-1.5,0.32,1.0,0.8,blackcol=dimcols[0])
-drawdiscontinuity(axnew[4],0.795,0.0008,-1.5,0.32,1.0,0.8,blackcol=dimcols[0])
-drawdiscontinuity(axnew[5],2.15,0.0055,-1.5,0.32,1.0,0.8,blackcol=dimcols[0])
+drawdiscontinuity(axnew[0],34.5,0.1,-1.5,0.32,1.0,0.8)
+#drawdiscontinuity(axnew[1],17,0.18,-1.5,0.32,1.0,0.8,blackcol=dimcols[0])
+drawdiscontinuity(axnew[2],78.5,0.1,-1.5,0.32,1.0,0.8) #,blackcol=dimcols[0])
+drawdiscontinuity(axnew[3],2.05,0.007,-1.5,0.32,1.0,0.8) #,blackcol=dimcols[0])
 
 for ipol in range(0,len(toPlot)):
   axnew[0].text(1+5*ipol,38,toPlotNames[ipol],ha='center',va='center',fontsize=5,rotation=45)
+  axnew[3].text(1+5*ipol+1,1.98,('('+toPlotGenes[ipol]+')' if len(toPlotGenes[ipol]) > 0 else ''),ha='right',va='top',fontsize=5,rotation=45)
         
-f.savefig("figS6.pdf")
+f.savefig('figS6.pdf')
 
         
 axarr[0].set_ylabel('Rel. cond. (A.U.)',fontsize=6)
@@ -218,12 +209,12 @@ for iax in range(0,13):
 for iax in range(10,15):
     axarr[iax].set_xlabel('$t$ (min)',fontsize=6)
     
-for iax in range(0,6):
+for iax in range(0,4):
     pos = axnew[iax].get_position()
     f.text(pos.x0 - 0.08, pos.y1 - 0.0, chr(ord('A')+iax), fontsize=9)
 for iax in range(0,13):
   pos = axarr[iax].get_position()
-  f.text(pos.x0 - 0.035, pos.y1 - 0.0, chr(ord('G')+iax), fontsize=9)
+  f.text(pos.x0 - 0.035, pos.y1 - 0.0, chr(ord('E')+iax), fontsize=9)
 
     
-f.savefig("figS6.pdf")
+f.savefig('figS6.pdf')

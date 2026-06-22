@@ -30,15 +30,14 @@ def drawdiscontinuity(ax,y,yoffset,x=0,xoffset=0.1,lw=2.0,lw2=1.0):
   thisline = ax.plot([x-1.5*xoffset,x+1.5*xoffset],[y-0.75*yoffset,y+0.75*yoffset],'k-',color='#FFFFFF',zorder=100,linewidth=lw)
   thisline[0].set_clip_on(False)
 
-f,axarr = subplots(1,8)
+f,axarr = subplots(1,6)
 
 axarr[0].set_position([0.08,0.65,0.25,0.26])
 axarr[1].set_position([0.08+0.29,0.65,0.25,0.26])
 for iax in range(0,2):
-  axarr[2+iax].set_position([0.08+0.29*iax+0.05,0.65+0.01,0.02,0.08])
-  axarr[4+iax].set_position([0.08+0.29*iax+0.13,0.65+0.01,0.02,0.08])
-  axarr[6+iax].set_position([0.08+0.29*iax+0.21,0.65+0.01,0.02,0.08])
-for iax in range(0,8):
+  axarr[2+iax].set_position([0.08+0.29*iax+0.13,0.65+0.01,0.02,0.08])
+  axarr[4+iax].set_position([0.08+0.29*iax+0.21,0.65+0.01,0.02,0.08])
+for iax in range(0,6):
   axarr[iax].tick_params(axis='both', which='major', labelsize=4, length=2)
   for axis in ['top','bottom','left','right']:
     axarr[iax].spines[axis].set_linewidth(0.3)
@@ -61,7 +60,7 @@ def mybar(ax,x,y,facecolor=[],linewidth=0.3,w=0.4):
     print(str(qs[4]))
   return [p,a2]
 
-tposts = [10,30*60]
+tpost = 30*60
 stimSet = 'n1600_freq16.0'
     
 cols = ['#000000','#3333FF','#FF3333']
@@ -108,7 +107,7 @@ for iiarea in range(0,len(iareas)):
         bins_all = []
         FRvecs = []
         myseed = 1
-        filename = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,CMcomb_samps_nonIC_'+areas[iarea]+'x0.5,0.5,1.5,1.5,'+str(isubj)+'_onset24040000.0_'+stimSet+'_dur3.0_flux150.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
+        filename = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,CMcomb_samps_nonIC_'+areas[iarea]+'x0.5,0.5,1.5,1.5,'+str(isubj)+'_onset24040000.0_'+stimSet+'_dur3.0_flux120.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
         if exists(filename):
           if not printedLoading:
             printedLoading = True
@@ -131,29 +130,26 @@ for iiarea in range(0,len(iareas)):
         continue
       axarr[iiarea].plot((times-24040000)/60/1000,mean(array(condsthisarea[igroup]),axis=0),lw=0.5,color=cols[(iiarea+1)*igroup],zorder=3)
       mybar(axarr[2+iiarea],igroup,array(abscondsthisarea[igroup])[:,0],facecolor=dimcols[(iiarea+1)*igroup])
-      tposts = [10,60*30]
-      for itpost in [0,1]:
-        tpost = tposts[itpost]
-        minabs = min(abs(times-(24040000+tpost*1000)))
-        its = [it for it in range(0,len(times)) if times[it]-(24040000+tpost*1000) == minabs][0]
-        mybar(axarr[4+2*itpost+iiarea],igroup,(array(condsthisarea[igroup])[:,its]-1)*100,facecolor=dimcols[(iiarea+1)*igroup])
+
+      minabs = min(abs(times-(24040000+tpost*1000)))
+      its = [it for it in range(0,len(times)) if times[it]-(24040000+tpost*1000) == minabs][0]
+      mybar(axarr[4+iiarea],igroup,(array(condsthisarea[igroup])[:,its]-1)*100,facecolor=dimcols[(iiarea+1)*igroup])
 
     if prod(array(abscondsthisarea[0]).shape)==0 or prod(array(abscondsthisarea[1]).shape)==0:
       continue
-    pval = scipy.stats.ranksums(array(abscondsthisarea[0])[:,its],array(abscondsthisarea[1])[:,its])[1]
-    print('iiarea = '+str(iiarea)+', itpost = '+str(itpost)+', pval = '+str(pval)+', means = '+str(mean(array(condsthisarea[0])[:,its]))+' (HC) vs '+str(mean(array(condsthisarea[1])[:,its]))+' (SCZ)')
+    pval = scipy.stats.ranksums(array(abscondsthisarea[0])[:,0],array(abscondsthisarea[1])[:,0])[1]
+    print('iiarea = '+str(iiarea)+', baseline, pval = '+str(pval)+', means = '+str(mean(array(abscondsthisarea[0])[:,0]))+' (HC) vs '+str(mean(array(abscondsthisarea[1])[:,0]))+' (SCZ)')
     if pval < 0.05:
-      axarr[2+iiarea].plot([0,0,1,1],[50-8*iiarea+x for x in [0,2-1.0*iiarea,2-1.0*iiarea,0]],'k-',lw=0.3)
-      axarr[2+iiarea].text(0.5, 53-9*iiarea,'*',fontsize=5,ha='center',va='center')
-    for itpost in [0,1]:
-      tpost = tposts[itpost]
-      minabs = min(abs(times-(24040000+tpost*1000)))
-      its = [it for it in range(0,len(times)) if times[it]-(24040000+tpost*1000) == minabs][0]
-      pval = scipy.stats.ranksums(array(condsthisarea[0])[:,its],array(condsthisarea[1])[:,its])[1]
-      print('iiarea = '+str(iiarea)+', itpost = '+str(itpost)+', pval = '+str(pval)+', means = '+str(mean(array(condsthisarea[0])[:,its]))+' (HC) vs '+str(mean(array(condsthisarea[1])[:,its]))+' (SCZ)')
-      if pval < 0.05:
-        axarr[4+2*itpost+iiarea].plot([0,0,1,1],[-8.6-8*iiarea+x for x in [0,0.8-0.5*iiarea,0.8-0.5*iiarea,0]] if itpost == 0 else [185-30*iiarea+x for x in [0,7-4*iiarea,7-4*iiarea,0]],'k-',lw=0.3)
-        axarr[4+2*itpost+iiarea].text(0.5,-7-9*iiarea if itpost == 0 else 195-33*iiarea,'*',fontsize=5,ha='center',va='center')
+      axarr[2+iiarea].plot([0,0,1,1],[50-8*iiarea+x for x in [0,2-1.0*iiarea,2-1.0*iiarea,0]],'k-',lw=0.3,clip_on=False)
+      axarr[2+iiarea].text(0.5, 53-9*iiarea,'*',fontsize=5,ha='center',va='center',clip_on=False)
+
+    minabs = min(abs(times-(24040000+tpost*1000)))
+    its = [it for it in range(0,len(times)) if times[it]-(24040000+tpost*1000) == minabs][0]
+    pval = scipy.stats.ranksums(array(condsthisarea[0])[:,its],array(condsthisarea[1])[:,its])[1]
+    print('iiarea = '+str(iiarea)+', tpost = '+str(tpost)+', pval = '+str(pval)+', means = '+str(mean(array(condsthisarea[0])[:,its]))+' (HC) vs '+str(mean(array(condsthisarea[1])[:,its]))+' (SCZ)')
+    if pval < 0.05:
+      axarr[4+iiarea].plot([0,0,1,1],[165-10*iiarea+x for x in [0,7-4*iiarea,7-4*iiarea,0]],'k-',lw=0.3,clip_on=False)
+      axarr[4+iiarea].text(0.5,175-10*iiarea,'*',fontsize=5,ha='center',va='center',clip_on=False)
     baselines_all.append(baselines[:])
     baselineCoeffs = ones([max(isubjs_HC+isubjs_SCZ)+1,])
     for igroup in range(0,2):
@@ -180,8 +176,9 @@ for iiarea in range(0,len(iareas)):
     output_file.write(')\n')
     output_file.close()
 
+    print("iarea = "+str(iarea)+", mean SCZ baselineCoeff = "+str(mean(baselineCoeffs[isubjs_SCZ]))+", EE(SCZ) = "+str(mean(baselineCoeffs[isubjs_SCZ])*0.0005))
 
-for iax in [2,3,4,5,6,7]:
+for iax in [2,3,4,5]:
   boxoff(axarr[iax])
 axarr[0].set_ylabel('Rel. cond. (A.U.)',fontsize=5)
 for iax in range(2,6):
@@ -191,20 +188,27 @@ for iax in range(0,2):
     axarr[iax].set_title(areas[iax],fontsize=5)
     axarr[iax].set_xlabel('$t$ (min)',fontsize=5)
 
-    try:
-        axarr[4].set_yticks([-10,-20],['-10%','-20%'])
-        axarr[5].set_yticks([-15,-20],['-15%','-20%'])
-        axarr[6].set_yticks([100,200],['+100%','+200%'])
-        axarr[7].set_yticks([125,150],['+125%','+150%'])
-    except:
-        print("matplotlib issue, no y-ticks set")
-    axarr[4].set_ylim([-29,-5])
-    axarr[5].set_ylim([-21,-14.5])
-    axarr[6].set_ylim([65,210])
-    axarr[7].set_ylim([110,170])
-    axarr[4+iax].set_title('10 sec',fontsize=5)
-    axarr[6+iax].set_title('30 min',fontsize=5)
+    #axarr[4].set_yticks([-10,-20],['-10%','-20%'])
+    #axarr[5].set_yticks([-15,-20],['-15%','-20%'])
+    #axarr[6].set_yticks([100,200],['+100%','+200%'])
+    #axarr[7].set_yticks([125,150],['+125%','+150%'])
+    #axarr[4].set_ylim([-50,-5])
+    #axarr[5].set_ylim([-50,-5])
+    #axarr[6].set_ylim([65,210])
+    #axarr[7].set_ylim([110,170])
+    axarr[2+iax].set_title('Baseline',fontsize=5)
+    axarr[4+iax].set_title(str(int(tpost/60))+' min',fontsize=5)
     pos = axarr[iax].get_position()
     f.text(pos.x0 - 0.04, pos.y1 - 0.0, chr(ord('A')+iax), fontsize=9)
-    
-f.savefig("fig4A-B.pdf")
+
+    #axarr[2+iax].set_ylabel('(pS)',fontsize=5,rotation=0)
+    #axarr[4+iax].set_ylabel('(%)',fontsize=5,rotation=0)
+    axarr[2+iax].set_ylim([29,46])
+    axarr[2+iax].set_yticks([30,40])
+    axarr[2+iax].set_yticklabels(['30 pS','40 pS'])
+
+    axarr[4+iax].set_ylim([20,170])
+    axarr[4+iax].set_yticks([50,100,150])
+    axarr[4+iax].set_yticklabels(['+50%','+100%','+150%'])
+
+f.savefig('fig4A-B.pdf')

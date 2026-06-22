@@ -113,7 +113,7 @@ for itpost in range(0,3):
         bins_all = []
         FRvecs = []
         myseed = 1
-        filename = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,CMcomb_samps_nonIC_'+areas[iarea]+'x0.5,0.5,1.5,1.5,'+str(isubj)+'_onset24040000.0_'+stimSet+'_dur3.0_flux150.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
+        filename = '../synplast/nrn_tstop27000000_tol1e-06_GluR1,GluR1_memb,GluR2,GluR2_memb,CMcomb_samps_nonIC_'+areas[iarea]+'x0.5,0.5,1.5,1.5,'+str(isubj)+'_onset24040000.0_'+stimSet+'_dur3.0_flux120.0_Lflux5.0_Gluflux10.0_AChflux10.0.mat'
         if exists(filename):
           print("Loading "+filename)
           A = scipy.io.loadmat(filename)
